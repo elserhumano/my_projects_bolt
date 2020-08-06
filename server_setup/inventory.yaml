@@ -1,0 +1,14 @@
+---
+groups:
+- name: common
+  groups:
+  - name: prometeo
+    targets:
+    - 192.168.167.151
+config:
+  transport: ssh
+  ssh:
+    user: root
+    port: 22
+    privkey: 
+    host-key-check: false
