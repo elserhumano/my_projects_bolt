@@ -22,7 +22,7 @@ plan server_setup::deploy
     # Enable members wheel do sudo without password
     # puppet module install saz-sudo
     sudo::conf { 'wheel':
-      ensure => present,
+      ensure  => present,
       content => "%wheel ALL=(ALL) NOPASSWD: ALL",
     }
 
