@@ -21,10 +21,10 @@ plan server_setup::deploy
 
     # Enable members wheel do sudo without password
     # puppet module install saz-sudo
-    #sudo::conf { 'wheel':
-    #  ensure => present,
-    #  content => "%wheel ALL=(ALL) NOPASSWD: ALL",
-    #}
+    sudo::conf { 'wheel':
+      ensure => present,
+      content => "%wheel ALL=(ALL) NOPASSWD: ALL",
+    }
 
     # Add public key to fernando user
 
