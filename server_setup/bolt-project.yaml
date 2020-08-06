@@ -1,0 +1,5 @@
+color: true
+name: server_setup
+plans:
+- server_setup::deploy
+
