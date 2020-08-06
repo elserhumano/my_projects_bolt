@@ -1,0 +1,3 @@
+# Modules from the Puppet Forge
+mod 'saz-sudo', '6.0.0'
+
