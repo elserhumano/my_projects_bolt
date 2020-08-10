@@ -8,4 +8,5 @@ name: server_setup
 #    level: info #debug
 plans:
 - server_setup::deploy
+- server_setup::mgmt_puppet
 

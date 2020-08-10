@@ -1,0 +1,13 @@
+# Data for common values
+#
+---
+mgmt_puppet::repositories:
+  puppet-tools:
+    ensure: 'present'
+    baseurl: 'http://yum.puppet.com/puppet-tools/el/7/$basearch'
+  puppet-agent:
+    ensure: 'present'
+    baseurl: 'https://yum.puppet.com/puppet6/el/7/$basearch'
+
+mgmt_puppet::packages: ['puppet-bolt', 'pdk', 'puppet-agent']
+
