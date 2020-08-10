@@ -41,11 +41,10 @@ plan server_setup::deploy
     }
 
     # Add repo to install neofetch
-    # Disable because has an error and then cannot run bolt if neofetch are call from .bashrc
-    #yumrepo { 'konimex-neofetch-epel-7':
-    #  ensure  => present,
-    #  baseurl => 'https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo'
-    #}
+    yumrepo { 'konimex-neofetch-epel-7':
+      ensure  => present,
+      baseurl => 'https://download.copr.fedorainfracloud.org/results/konimex/neofetch/epel-7-$basearch/'
+    }
 
     # Add epel repo
     yumrepo { 'epel':
@@ -60,10 +59,16 @@ plan server_setup::deploy
     }
 
     # Customize vim
-    $str = 'color murphy\nset tabstop=2 shiftwidth=2  expandtab\n'
-    file { '/root/.vimrc':
+    file_line { 'add colot to vim':
       ensure => present,
-      content => $str,
+      path   => '/root/.vimrc',
+      line   => 'color murphy',
+    }
+
+    file_line { 'add tabs to vim':
+      ensure => present,
+      path   => '/root/.vimrc',
+      line   => 'set tabstop=2 shiftwidth=2 expandtab',
     }
 
     # Update Os to the latest version
@@ -78,9 +83,20 @@ plan server_setup::deploy
     }
 
     # Add neofetch execution
-        
+    # Disable because afte this cannot run bolt again
+#    file_line { 'add neofetch execution':
+#      ensure => present,
+#      path   => '/root/.bashrc',
+#      line   => 'neofetch',
+#    }       
 
     # Customize root prompt
-
+    file_line { 'add root prompt':
+      ensure => present,
+      path   => '/root/.bashrc',
+      line   => "PS1='\\[\\033[1;36m\\]\\u\\[\\033[1;31m\\]@\\[\\033[1;32m\\]\\h:\\[\\033[1;35m\\]\\w\\[\\033[1;31m\\]\\n\\$ \\[\\033[0m\\]'",
+      match  => 'PS1=',
+    }       
   }
 }
+

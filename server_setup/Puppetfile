@@ -1,4 +1,5 @@
 # Modules from the Puppet Forge
+mod 'puppetlabs-stdlib', '4.9.1'
 mod 'saz-sudo', '6.0.0'
 mod 'saz-timezone', '6.0.0'
 
