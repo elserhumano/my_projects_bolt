@@ -3,7 +3,6 @@ plan server_setup::deploy
   TargetSpec $nodes,
 )
 {
-
   # Install the puppet-agent package if Puppet is not detected.
   # Copy over custom facts from the Bolt module path.
   # Run the `facter` command line tool to gather target information.
@@ -12,63 +11,64 @@ plan server_setup::deploy
   # Compile the manifest block into a catalog
   apply($nodes) {
 
-    # Add user fernando as member of wheel
-    user { $name:
-      ensure     => present,
-      groups     => ['wheel'],
-      membership => minimum,
-    }
+  # Add user's as member of wheel and assign ssh_authorized_key
+   $users = lookup('users')
+   $users.each | String $user, $values | {
+      user { $user:
+        ensure     => $values['ensure'],
+        groups     => $values['groups'],
+        membership => $values['membership'],
+      }
+
+      # Add public key to user
+      ssh_authorized_key { $values['name']:
+        ensure  => $values['ensure'],
+        user    => $user,
+        type    => $values['type'],
+        key     => $values['key'],
+      }
+   }
 
     # Enable members wheel do sudo without password
-    # puppet module install saz-sudo
     sudo::conf { 'wheel':
       ensure  => present,
       content => "%wheel ALL=(ALL) NOPASSWD: ALL",
     }
 
-    # Add public key to fernando user
-    ssh_authorized_key { 'notebook':
-      ensure  => present,
-      user    => 'fernando',
-      type    => 'ssh-rsa',
-      key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCskr4gKnrzHBF9f0xCMKlA88rfPipeE5Kg0bh51mhyBTvJxp9RvPY2j1idmvzGGrYcMRSik6r9Kd5Ga5lC8RTXVPZPBLMv8DP16K6r5iXnEr1M+qdT4Klg87S5v1Sl4YvV4sEw3VJRU2AC4NpJGRYmbMMNaB/wTRa7wqEN+3wUdOZmGIsSMr4VR6t6Efx0VmUgLZXkUdRJ+m8YCSDiiy4juGY52KlXexDKcF0z5SfQZzCh643SuP66w4F62+z5F0K5k41dMwbyGtI3rmxitvnID4vOR1FOwA9rLnWsrnQdrmaMxkB+P3WT27bxOc8l/aVl1/dc1dA3l7eOHUTdrTw1UCjOY1gmHhQZMTED3qVBK1tbPrdATR2+gMAywCXiNZmgQ8tKWZ804ACc+prlsclIQoIGr/oJUDZYcQg19WwARWphbeDyv70Z3PMSdcUztkmWZ00jwfP0EDCckRKsQ/i4I0mfC4y1zIPAnyn7LN+2jnCalxsEh5DSIHhQSSnYxMk=',
-      require => User[$name],
+    # Uninstall package's
+    $unpackages = lookup('unpackages')
+    $unpackages.each | String $unpack | {
+      package { $unpack:
+        ensure => absent,
+      }
     }
 
-    # Uninstall package chrony
-    package { 'chrony':
-      ensure => absent,
-    }
-
-    # Add repo to install neofetch
-    yumrepo { 'konimex-neofetch-epel-7':
-      ensure  => present,
-      baseurl => 'https://download.copr.fedorainfracloud.org/results/konimex/neofetch/epel-7-$basearch/'
-    }
-
-    # Add epel repo
-    yumrepo { 'epel':
-      ensure => present,
-      baseurl => 'https://download.fedoraproject.org/pub/epel/$releasever/$basearch/'
+    # Add repo's for install application's
+    $repositories = lookup('repositories')
+    $repositories.each | String $repo, $values | {
+      yumrepo { $repo:
+        ensure  => $values['ensure'],
+        baseurl => $values['baseurl'],
+      }
     }
 
     # Install packages vim, wget, ntp, neofetch
-    $list_packages = ['vim','wget','ntp','neofetch']
-    package { $list_packages:
-      ensure => present,
+    $packages = lookup('packages')
+    $packages.each | String $pack | {
+      package { $pack:
+        ensure => present,
+      }
     }
 
-    # Customize vim
-    file_line { 'add colot to vim':
-      ensure => present,
-      path   => '/root/.vimrc',
-      line   => 'color murphy',
-    }
-
-    file_line { 'add tabs to vim':
-      ensure => present,
-      path   => '/root/.vimrc',
-      line   => 'set tabstop=2 shiftwidth=2 expandtab',
+    # Customize vim and bashrc
+    $file_lines = lookup('file_lines')
+    $file_lines.each | String $name, $values | { 
+      file_line { $name:
+        ensure => $values['ensure'],
+        path   => $values['path'],
+        line   => $values['line'],
+        match  => $values['match'],
+      }
     }
 
     # Update Os to the latest version
@@ -81,22 +81,6 @@ plan server_setup::deploy
     class { 'timezone':
       timezone => 'Europe/Brussels'
     }
-
-    # Add neofetch execution
-    # Disable because afte this cannot run bolt again
-#    file_line { 'add neofetch execution':
-#      ensure => present,
-#      path   => '/root/.bashrc',
-#      line   => 'neofetch',
-#    }       
-
-    # Customize root prompt
-    file_line { 'add root prompt':
-      ensure => present,
-      path   => '/root/.bashrc',
-      line   => "PS1='\\[\\033[1;36m\\]\\u\\[\\033[1;31m\\]@\\[\\033[1;32m\\]\\h:\\[\\033[1;35m\\]\\w\\[\\033[1;31m\\]\\n\\$ \\[\\033[0m\\]'",
-      match  => 'PS1=',
-    }       
   }
 }
 
