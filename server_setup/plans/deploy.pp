@@ -41,23 +41,44 @@ plan server_setup::deploy
     }
 
     # Add repo to install neofetch
-    yumrepo { 'konimex-neofetch-epel-7':
-      ensure  => present,
-      baseurl => 'https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo'
-    }
-
+    # Disable because has an error and then cannot run bolt if neofetch are call from .bashrc
+    #yumrepo { 'konimex-neofetch-epel-7':
+    #  ensure  => present,
+    #  baseurl => 'https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo'
+    #}
 
     # Add epel repo
+    yumrepo { 'epel':
+      ensure => present,
+      baseurl => 'https://download.fedoraproject.org/pub/epel/$releasever/$basearch/'
+    }
 
     # Install packages vim, wget, ntp, neofetch
+    $list_packages = ['vim','wget','ntp','neofetch']
+    package { $list_packages:
+      ensure => present,
+    }
 
     # Customize vim
+    $str = 'color murphy\nset tabstop=2 shiftwidth=2  expandtab\n'
+    file { '/root/.vimrc':
+      ensure => present,
+      content => $str,
+    }
 
     # Update Os to the latest version
+    exec { 'yum -y update':
+      provider => shell,
+      unless   => 'yum -y update | grep "No packages"',
+    }
 
     # Configure time zone Europe/Brussels
+    class { 'timezone':
+      timezone => 'Europe/Brussels'
+    }
 
     # Add neofetch execution
+        
 
     # Customize root prompt
 

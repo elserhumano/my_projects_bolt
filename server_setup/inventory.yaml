@@ -5,10 +5,18 @@ groups:
   - name: prometeo
     targets:
     - 192.168.167.151
+    #config:
+    #  ssh:
+    #    user: root
+    #    port: 22
+    #    private-key: ~/.ssh/id_rsa
+
+# General
 config:
   transport: ssh
   ssh:
     user: root
     port: 22
-    privkey: 
+    #privkey: ~/.ssh/id_rsa 
     host-key-check: false
+

@@ -1,5 +1,11 @@
 color: true
 name: server_setup
+#log:
+#  console:
+#    level: info
+#  "logs/debug.log":
+#    append: false
+#    level: info #debug
 plans:
 - server_setup::deploy
 
