@@ -12,8 +12,8 @@ plan server_setup::deploy
   apply($nodes) {
 
   # Add user's as member of wheel and assign ssh_authorized_key
-   $users = lookup('users')
-   $users.each | String $user, $values | {
+  $users = lookup('users')
+  $users.each | String $user, $values | {
       user { $user:
         ensure     => $values['ensure'],
         groups     => $values['groups'],
@@ -22,17 +22,17 @@ plan server_setup::deploy
 
       # Add public key to user
       ssh_authorized_key { $values['name']:
-        ensure  => $values['ensure'],
-        user    => $user,
-        type    => $values['type'],
-        key     => $values['key'],
+        ensure => $values['ensure'],
+        user   => $user,
+        type   => $values['type'],
+        key    => $values['key'],
       }
-   }
+  }
 
     # Enable members wheel do sudo without password
     sudo::conf { 'wheel':
       ensure  => present,
-      content => "%wheel ALL=(ALL) NOPASSWD: ALL",
+      content => '%wheel ALL=(ALL) NOPASSWD: ALL',
     }
 
     # Uninstall package's
