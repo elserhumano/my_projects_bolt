@@ -1,3 +1,4 @@
 modules/
 .resource_types/
+.vagrant/
 
