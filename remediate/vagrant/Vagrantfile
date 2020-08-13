@@ -9,11 +9,19 @@ Vagrant.configure("2") do |config|
   # Machine name
   config.vm.hostname = 'remediate'
 
+  # To resolve later 11/08/2020
+  # vagrant plugin install vagrant-disksize -> To define the size of the disk
+  # config.disksize.size = '20GB'
+
   # Set VM name in VirtualBox
   config.vm.provider "virtualbox" do |v|
     v.name = 'Puppet Remediate'
     v.memory = 2048
+    v.cpus = 2
   end
+
+  # Configure second network
+  config.vm.network "private_network", ip: "192.168.167.173", virtualbox__intnet: "VirtualBox Host-Only Ethernet Adapter #2", :adapter => 2
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the

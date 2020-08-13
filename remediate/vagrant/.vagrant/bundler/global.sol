@@ -1,1 +1,1 @@
-{"dependencies":[["vagrant-bolt",["= 0.3.0"]]],"checksum":"70214b7349325aea5e8758062486268ac5e550e1f522fc3e3694be071ebad7aa","vagrant_version":"2.2.9"}
+{"dependencies":[["vagrant-bolt",["= 0.3.0"]],["vagrant-disksize",["= 0.1.3"]]],"checksum":"1bd067849b2f871fe9452df939f4ff3259ebce19aaeece780c5de1678dd0aeaa","vagrant_version":"2.2.9"}
