@@ -35,6 +35,21 @@ plan server_setup::deploy
       content => '%wheel ALL=(ALL) NOPASSWD: ALL',
     }
 
+    # Disable SELinux
+    class { 'selinux':
+      mode => 'permissive',
+      type => 'targeted',
+    }
+
+    # Disable and stop services
+    $unservices = lookup('unservices')
+    $unservices.each | String $unservice | {
+      service { $unservice:
+        ensure => stopped,
+        enable => false,
+      }
+    }
+
     # Uninstall package's
     $unpackages = lookup('unpackages')
     $unpackages.each | String $unpack | {
@@ -61,6 +76,7 @@ plan server_setup::deploy
       }
     }
 
+    # Asure the files .bashrc and .vimrc exist
     $files = lookup('files')
     $files.each | String $the_file | {
       file { $the_file:
