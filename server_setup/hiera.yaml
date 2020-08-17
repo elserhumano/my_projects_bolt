@@ -8,6 +8,9 @@ defaults:
 
 hierarchy:
 
+  - name: "Add ssh key ansiblix"
+    path: "adm_ansiblix.yaml"
+
   - name: "Mgmt Puppet"
     path: "mgmt_puppet.yaml"
 

@@ -17,11 +17,15 @@ repositories:
   konimex-neofetch-epel7:
     ensure: 'present'
     baseurl: 'https://download.copr.fedorainfracloud.org/results/konimex/neofetch/epel-7-$basearch/'
+    gpgcheck: 'false'
   epel:
     ensure: 'present'
     baseurl: 'https://download.fedoraproject.org/pub/epel/$releasever/$basearch/'
+    gpgcheck: 'false'
 
 packages: ['vim', 'wget', 'ntp', 'neofetch']
+
+files: ['/root/.vimrc','/root/.bashrc']
 
 file_lines:
   vim_set_01:

@@ -9,4 +9,4 @@ name: server_setup
 plans:
 - server_setup::deploy
 - server_setup::mgmt_puppet
-
+- server_setup::adm_ansiblix

@@ -17,6 +17,6 @@ config:
   ssh:
     user: root
     port: 22
-    #privkey: ~/.ssh/id_rsa 
-    host-key-check: false
+    privkey: ~/.ssh/id_rsa 
+    #host-key-check: false
 

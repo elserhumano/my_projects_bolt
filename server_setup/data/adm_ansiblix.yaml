@@ -1,0 +1,11 @@
+# Data for common values
+#
+---
+
+adm_ansiblix::keys:
+  root:
+    ensure: 'present'
+    name: 'ansiblix'
+    type: 'ssh-rsa'
+    key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC4YKsnGSsg3SsM7EJi1N+owysZALj6I6P9bMY1Bb3s18fG/LENwU7SzpCV1NzBpBzOu9aRj83YQjG5Eht4XjSIc2UvZVAYPGngxNRheZJwDbSUrRY82gmipL+P7eaIWjs9jxGXyHq6+aWGK8xKwvQzCSLcLKSdz7jKZJlPXp+8ZuIRhkib7Hc9n/vFCTP9DWEFpyY/uOepCykpNxf/nks1P8+TzUUDLCbl+MFwjnDRkcCWqAMwpR7Kh5F7FMPzd9xfvk4IrQSsUL/YabcLhDsRVB0D6kZH4VEmm9nCEr2z11EjbzjS5jrDf8I8L5jh/3aF4K/XugdMyFNLw4t7aSY3'
+

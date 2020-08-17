@@ -47,8 +47,9 @@ plan server_setup::deploy
     $repositories = lookup('repositories')
     $repositories.each | String $repo, $values | {
       yumrepo { $repo:
-        ensure  => $values['ensure'],
-        baseurl => $values['baseurl'],
+        ensure   => $values['ensure'],
+        baseurl  => $values['baseurl'],
+        gpgcheck => $values['gpgcheck'],
       }
     }
 
@@ -60,14 +61,22 @@ plan server_setup::deploy
       }
     }
 
-    # Customize vim and bashrc
+    $files = lookup('files')
+    $files.each | String $the_file | {
+      file { $the_file:
+        ensure => present,
+      }
+    }
+
+    # Customize vimrc and bashrc
     $file_lines = lookup('file_lines')
-    $file_lines.each | String $name, $values | { 
+    $file_lines.each | String $name, $values | {
       file_line { $name:
-        ensure => $values['ensure'],
-        path   => $values['path'],
-        line   => $values['line'],
-        match  => $values['match'],
+        ensure  => $values['ensure'],
+        path    => $values['path'],
+        line    => $values['line'],
+        match   => $values['match'],
+        require => File[$values['path']]
       }
     }
 
