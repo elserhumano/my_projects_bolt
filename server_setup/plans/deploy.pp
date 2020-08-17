@@ -28,6 +28,16 @@ plan server_setup::deploy
         key    => $values['key'],
       }
   }
+  
+    # Add special users
+    $special_users = lookup('special_users')
+    $special_users.each | String $special_user, $values | {
+      user { $special_user:
+        ensure => $values['ensure'],
+        groups => $values['groups'],
+        membership => $values['membership'],
+      }
+    }
 
     # Enable members wheel do sudo without password
     sudo::conf { 'wheel':
